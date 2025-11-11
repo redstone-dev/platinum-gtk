@@ -1,5 +1,5 @@
 public class Platinum : Gtk.Application {
-    private const string APP_ID = "gay.pages.junidev.Platinum";
+    private const string APP_ID = "io.github.redstone-dev.Platinum";
 
     private TabbedWebView tabbed_web_view;
 
@@ -14,12 +14,16 @@ public class Platinum : Gtk.Application {
 
     //  private Gtk.MenuButton menu_button;
     private Regex protocol_regex;
+    private Regex domain_regex;
+
+    private string search_engine_uri_format = "https://google.com/search?q=%s";
 
     public Platinum () {
         Object (application_id: APP_ID);
 
         try {
             this.protocol_regex = new Regex (".*://.*");
+            this.domain_regex = new Regex(".*\\..*");
         } catch (RegexError e) {
             critical("RegexError: %s", e.message);
         }
@@ -43,7 +47,21 @@ public class Platinum : Gtk.Application {
         this.url_bar.set_hexpand (true);
         this.go_button = new Gtk.Button.with_label ("Go");
         this.go_button.clicked.connect (() => {
-            this.tabbed_web_view.set_uri (this.url_bar.text);
+            if (!this.protocol_regex.match (this.url_bar.text) 
+                && this.domain_regex.match (this.url_bar.text)) 
+            {
+                var fmt = "https://%s".printf (this.url_bar.text);
+                print ("regexes - Setting URI: ");
+                print (fmt);
+                
+                this.tabbed_web_view.set_uri (fmt);
+                return;
+            } 
+
+            var fmt = this.search_engine_uri_format.printf (this.url_bar.text);
+            print ("Setting URI: ");
+            print (fmt);
+            this.tabbed_web_view.set_uri (fmt);
         });
 
         //this.menu_button = new Gtk.MenuButton ();
