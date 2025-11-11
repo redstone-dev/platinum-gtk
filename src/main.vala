@@ -45,24 +45,9 @@ public class Platinum : Gtk.Application {
             placeholder_text = "Search or enter URL",
         };
         this.url_bar.set_hexpand (true);
+        this.url_bar.activate.connect (this.go_button_handler);
         this.go_button = new Gtk.Button.with_label ("Go");
-        this.go_button.clicked.connect (() => {
-            if (!this.protocol_regex.match (this.url_bar.text) 
-                && this.domain_regex.match (this.url_bar.text)) 
-            {
-                var fmt = "https://%s".printf (this.url_bar.text);
-                print ("regexes - Setting URI: ");
-                print (fmt);
-                
-                this.tabbed_web_view.set_uri (fmt);
-                return;
-            } 
-
-            var fmt = this.search_engine_uri_format.printf (this.url_bar.text);
-            print ("Setting URI: ");
-            print (fmt);
-            this.tabbed_web_view.set_uri (fmt);
-        });
+        this.go_button.clicked.connect (this.go_button_handler);
 
         //this.menu_button = new Gtk.MenuButton ();
 
@@ -99,6 +84,20 @@ public class Platinum : Gtk.Application {
 
         window.child = vbox;
         window.present ();
+    }
+
+    public void go_button_handler() {
+        if (!this.protocol_regex.match (this.url_bar.text) 
+            && this.domain_regex.match (this.url_bar.text)) 
+        {
+            var fmt = "https://%s".printf (this.url_bar.text);
+
+            this.tabbed_web_view.set_uri (fmt);
+            return;
+        } 
+
+        var fmt = this.search_engine_uri_format.printf (this.url_bar.text);
+        this.tabbed_web_view.set_uri (fmt);
     }
 
     public static int main (string[] args) {
