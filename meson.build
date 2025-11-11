@@ -9,7 +9,6 @@ dependencies = [
 ]
 
 sources = files('src/main.vala', 
-                'src/TabBar.vala',
                 'src/TabbedWebView.vala',
                 'src/SettingsMenu.vala')
 
