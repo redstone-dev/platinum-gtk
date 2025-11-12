@@ -40,8 +40,13 @@ public class TabbedWebView : Gtk.Box {
         });
 
         webview.load_changed.connect ((wv, event) => {
-            this.url_bar->text = wv.get_uri();
-            tab_label.set_text(wv.get_title());
+            if (event == WebKit.LoadEvent.STARTED)  {
+                tab_label.set_text ("Loading...");
+            }
+            if (event == WebKit.LoadEvent.FINISHED) {
+                this.url_bar->set_text (wv.get_uri());
+                tab_label.set_text(wv.get_title());
+            }
         });
     }
     
