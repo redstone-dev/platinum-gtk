@@ -78,7 +78,7 @@ public class Platinum : Gtk.Application {
         window.set_titlebar (header);
 
         this.tabbed_web_view = new TabbedWebView();
-        this.tabbed_web_view.add_new_tab_from_html_file (Environment.get_current_dir () + "/../pages/new_window.html");
+        this.tabbed_web_view.add_new_tab ("file://" + Environment.get_current_dir () + "/../pages/new_window.html");
         
         
         var vbox = new Gtk.Box(Gtk.Orientation.VERTICAL, 4);
