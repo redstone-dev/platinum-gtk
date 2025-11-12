@@ -7,7 +7,7 @@ A WebKitGTK-based browser written in Vala.
 
 ## Compiling
 
-Requires `gtk4`, `valac`, and `meson`.
+Requires `gtk4`, `valac`, `libgee`, `glib-networking`, and `meson`.
 
 ```
 meson build
