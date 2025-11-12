@@ -32,7 +32,7 @@ public class Platinum : Gtk.Application {
     public override void activate () {
         
         var window = new Gtk.ApplicationWindow (this) {
-            title = ""
+            title = "Platinum"
         };
         window.set_default_size (800, 600);
         
