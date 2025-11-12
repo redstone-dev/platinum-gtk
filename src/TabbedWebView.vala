@@ -23,6 +23,21 @@ public class TabbedWebView : Gtk.Box {
         webview.load_uri(uri);
         webview.set_hexpand (true);
         webview.set_vexpand (true);
+
+        var tab_label = new Gtk.Label("Loading...");
+        this.notebook.append_page (webview, tab_label);
+
+        webview.load_changed.connect ((wv, event) => {
+            this.url_bar->text = wv.get_uri();
+            tab_label.set_text(wv.get_title());
+        });
+    }
+
+    public void add_new_tab_from_html_file (string htmlPath) {
+        var webview = new WebKit.WebView ();
+        webview.load_uri ("file://" + htmlPath);
+        webview.set_hexpand (true);
+        webview.set_vexpand (true);
         webview.load_changed.connect ((wv, event) => {
             url_bar->text = wv.get_uri();
         });

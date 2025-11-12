@@ -5,34 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Window</title>
     <!-- <base href="~/Code/vala/pages"> -->
+    <style>
+        body {
+            text-align: center;
+        }
+        img {
+            width: 4em;
+            height: 4em;
+            object-fit: contain;
+        }
+        ul {
+            list-style-type: none;
+            display: flex;
+            justify-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+        li {
+            padding-top: 2em;
+            border: 2px solid gray;
+            width: 10em;
+            height: 8em;
+            border-radius: 12px;
+            justify-content: center;
+            margin-right: 1em;
+        }
+        li:hover {
+            cursor: pointer;
+            border-color: dodgerblue;
+            background: rgb(168, 211, 255);
+        }
+        .star {
+            color: gray;
+        }
+    </style>
 </head>
 <body>
     <h1>Quick Links</h1>
     <ul>
         <li>
             <a href="https://google.com">
-                <img src="../pages/images/logo_google" alt="Google logo" />
+                <img src="../pages/images/logo_google.png" alt="Google logo" />
                 <p>Google</p>
             </a>
         </li>
         <li>
             <a href="https://youtube.com">
-                <img src="../pages/images/logo_youtube" alt="YouTube logo" />
-                <p>Google</p>
+                <img src="../pages/images/logo_youtube.png" alt="YouTube logo" />
+                <p>YouTube</p>
             </a>
         </li>
         <li>
             <a href="https://github.com">
-                <img src="../pages/images/logo_github" alt="GitHub logo" />
+                <img src="../pages/images/logo_github.png" alt="GitHub logo" />
                 <p>GitHub</p>
             </a>
         </li>
         <li>
             <a href="https://bsky.app">
-                <img src="../pages/images/logo_bluesky" alt="BlueSky logo" />
+                <img src="../pages/images/logo_bluesky.png" alt="BlueSky logo" />
                 <p>BlueSky</p>
             </a>
         </li>
     </ul>
+    <p class="star"><i>Like the project? <a href="https://github.com/redstone-dev/platinum-gtk">Star it on GitHub</a></i></p>
 </body>
 </html>

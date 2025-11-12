@@ -1,6 +1,9 @@
 # Platinum
 
+![Screenshot of Platinum, viewing the Wikipedia article for GTK.](readme/WikiScreenshot.png)
+
 A WebKitGTK-based browser written in Vala.
+
 
 ## Compiling
 

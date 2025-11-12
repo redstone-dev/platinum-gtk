@@ -39,7 +39,9 @@ public class Platinum : Gtk.Application {
         // Header bar. Contains the search bar and the navigation buttons
         this.new_tab_button = new Gtk.Button.with_label ("New Tab");
         this.new_tab_button.clicked.connect (() => {
-            this.tabbed_web_view.add_new_tab ("https://google.com");
+            this.tabbed_web_view.add_new_tab (
+                "https://google.com"
+            );
         });
         this.url_bar = new Gtk.Entry() {
             placeholder_text = "Search or enter URL",
@@ -76,7 +78,8 @@ public class Platinum : Gtk.Application {
         window.set_titlebar (header);
 
         this.tabbed_web_view = new TabbedWebView();
-        this.tabbed_web_view.add_new_tab ("https://google.com/");
+        this.tabbed_web_view.add_new_tab_from_html_file (Environment.get_current_dir () + "/../pages/new_window.html");
+        
         
         var vbox = new Gtk.Box(Gtk.Orientation.VERTICAL, 4);
         vbox.append(this.tabbed_web_view);
