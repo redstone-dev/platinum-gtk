@@ -25,26 +25,25 @@ public class TabbedWebView : Gtk.Box {
         webview.set_vexpand (true);
 
         var tab_label = new Gtk.Label("Loading...");
-        this.notebook.append_page (webview, tab_label);
+        var close_tab_button = new Gtk.Button.with_label ("X");
+        var label_and_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4);
+        label_and_button_box.append (tab_label);
+        label_and_button_box.append (close_tab_button);
+
+        this.notebook.append_page (webview, label_and_button_box);
+
+        close_tab_button.clicked.connect (() => {
+            var page = this.notebook.page_num (webview);
+            this.notebook.remove_page (page);
+            webview.destroy ();
+        });
 
         webview.load_changed.connect ((wv, event) => {
             this.url_bar->text = wv.get_uri();
             tab_label.set_text(wv.get_title());
         });
     }
-
-    public void add_new_tab_from_html_file (string htmlPath) {
-        var webview = new WebKit.WebView ();
-        webview.load_uri ("file://" + htmlPath);
-        webview.set_hexpand (true);
-        webview.set_vexpand (true);
-        webview.load_changed.connect ((wv, event) => {
-            url_bar->text = wv.get_uri();
-        });
-        var tab_label = new Gtk.Label("New Tab");
-        this.notebook.append_page (webview, tab_label);
-    }
-
+    
     public void set_uri(string uri) {
         this.current_webview->load_uri(uri);
 
