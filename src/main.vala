@@ -37,12 +37,7 @@ public class Platinum : Gtk.Application {
         window.set_default_size (1000, 600);
         
         // Header bar. Contains the search bar and the navigation buttons
-        this.new_tab_button = new Gtk.Button.with_label ("New Tab");
-        this.new_tab_button.clicked.connect (() => {
-            this.tabbed_web_view.add_new_tab (
-                "https://google.com"
-            );
-        });
+
         this.url_bar = new Gtk.Entry() {
             placeholder_text = "Search or enter URL",
         };
@@ -58,6 +53,12 @@ public class Platinum : Gtk.Application {
         header.pack_start (this.url_bar);
         header.pack_start (this.go_button);
 
+        this.new_tab_button = new Gtk.Button.with_label ("New Tab");
+        this.new_tab_button.clicked.connect (() => {
+            this.tabbed_web_view.add_new_tab (
+                "https://google.com"
+            );
+        });
         this.back_button = new Gtk.Button.with_label("<-");
         this.back_button.add_css_class ("circular");
         this.back_button.clicked.connect(() => 
@@ -70,9 +71,12 @@ public class Platinum : Gtk.Application {
         this.refresh_button.clicked.connect(() => 
             this.tabbed_web_view.current_webview->reload ());
 
+        
         header.pack_end (refresh_button);
         header.pack_end (forward_button);
         header.pack_end (back_button);
+        header.pack_end (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+        header.pack_end (new_tab_button);
         // End of header bar
 
         window.set_titlebar (header);
