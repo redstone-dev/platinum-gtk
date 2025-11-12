@@ -34,7 +34,7 @@ public class Platinum : Gtk.Application {
         var window = new Gtk.ApplicationWindow (this) {
             title = "Platinum"
         };
-        window.set_default_size (800, 600);
+        window.set_default_size (1000, 600);
         
         // Header bar. Contains the search bar and the navigation buttons
         this.new_tab_button = new Gtk.Button.with_label ("New Tab");
