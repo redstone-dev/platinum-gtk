@@ -4,6 +4,8 @@ public class Platinum : Gtk.Application {
     private TabbedWebView tabbed_web_view;
 
     // HeaderBar contents
+    private Gtk.Button settings_button;
+
     private Gtk.Button new_tab_button;
     private Gtk.Entry  url_bar;
     private Gtk.Button go_button;
@@ -15,6 +17,8 @@ public class Platinum : Gtk.Application {
     //  private Gtk.MenuButton menu_button;
     private Regex protocol_regex;
     private Regex domain_regex;
+
+    private SettingsSidebar settings_sidebar;
 
     private string search_engine_uri_format = "https://google.com/search?q=%s";
 
@@ -35,9 +39,27 @@ public class Platinum : Gtk.Application {
             title = "Platinum"
         };
         window.set_default_size (1000, 600);
-        
-        // Header bar. Contains the search bar and the navigation buttons
 
+        var model = new SettingsSidebarModel ();
+        try {
+            model.add_item<bool> ("platinum.ui.darkMode?", "Dark Mode",  InputWidgetType.CHECKBOX);
+        } catch (SidebarItemError e) {
+            critical (e.message);
+        }
+        this.settings_sidebar = new SettingsSidebar (model);
+        this.settings_sidebar.settings_changed.connect((_, key) => {
+            switch (key) {
+                case "platinum.ui.darkMode?":
+                    
+                    break;
+            }
+        });
+
+        // Header bar. Contains the search bar and the navigation buttons
+        this.settings_button = new Gtk.Button.with_label ("Settings...");
+        settings_button.clicked.connect (() => {
+            this.settings_sidebar.toggle ();
+        });
         this.url_bar = new Gtk.Entry() {
             placeholder_text = "Search or enter URL",
         };
@@ -49,6 +71,7 @@ public class Platinum : Gtk.Application {
         //this.menu_button = new Gtk.MenuButton ();
 
         var header = new Gtk.HeaderBar();
+        header.pack_start (this.settings_button);
         header.pack_start (this.new_tab_button);
         header.pack_start (this.url_bar);
         header.pack_start (this.go_button);
@@ -89,7 +112,11 @@ public class Platinum : Gtk.Application {
         vbox.append(this.tabbed_web_view);
         vbox.set_vexpand (true);
 
-        window.child = vbox;
+        var hbox = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 4);
+        hbox.append(settings_sidebar);
+        hbox.append(vbox);
+
+        window.child = hbox;
         window.present ();
     }
 

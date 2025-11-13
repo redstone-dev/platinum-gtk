@@ -10,6 +10,6 @@ dependencies = [
 
 sources = files('src/main.vala', 
                 'src/TabbedWebView.vala',
-                'src/SettingsMenu.vala')
+                'src/SettingsSidebar.vala')
 
 executable('platinum-gtk', sources, dependencies: dependencies)
