@@ -26,7 +26,7 @@ jobs:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with: 
                 upload_url: ${{ github.event.release.upload_url }}
-                asset_path: ${{ vars.ARTIFACT_NAME }}
-                asset_name: ${{ vars.ARTIFACT_NAME }}
+                asset_path: ${{ vars.ARTIFACT_NAME }}.zip
+                asset_name: ${{ vars.ARTIFACT_NAME }}.zip
                 asset_content_type: application/zip
 
