@@ -1,5 +1,5 @@
 public class TabbedWebView : Gtk.Box {
-    private Gtk.Notebook notebook;
+    public Gtk.Notebook notebook;
     public WebKit.WebView* current_webview;
     public Gtk.Entry* url_bar;
     public uint current_tab_id;

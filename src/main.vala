@@ -31,6 +31,7 @@ public class Platinum : Gtk.Application {
         } catch (RegexError e) {
             critical("RegexError: %s", e.message);
         }
+        
     }
 
     public override void activate () {
@@ -40,20 +41,9 @@ public class Platinum : Gtk.Application {
         };
         window.set_default_size (1000, 600);
 
-        var model = new SettingsSidebarModel ();
-        try {
-            model.add_item<bool> ("platinum.ui.darkMode?", "Dark Mode",  InputWidgetType.CHECKBOX);
-        } catch (SidebarItemError e) {
-            critical (e.message);
-        }
-        this.settings_sidebar = new SettingsSidebar (model);
-        this.settings_sidebar.settings_changed.connect((_, key) => {
-            switch (key) {
-                case "platinum.ui.darkMode?":
-                    
-                    break;
-            }
-        });
+        this.settings_sidebar = new SettingsSidebar ();
+
+
 
         // Header bar. Contains the search bar and the navigation buttons
         this.settings_button = new Gtk.Button.with_label ("Settings...");
@@ -113,11 +103,26 @@ public class Platinum : Gtk.Application {
         vbox.set_vexpand (true);
 
         var hbox = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 4);
+        populate_settings_sidebar ();
         hbox.append(settings_sidebar);
         hbox.append(vbox);
 
         window.child = hbox;
         window.present ();
+
+        
+    }
+
+    public void populate_settings_sidebar () {
+
+        
+
+        this.settings_sidebar.settings_changed.connect((_, key) => {
+            switch (key) {
+                case "":
+                    break;
+            }
+        });
     }
 
     public void go_button_handler() {

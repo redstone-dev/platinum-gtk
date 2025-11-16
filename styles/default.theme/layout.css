@@ -1,0 +1,17 @@
+:root {
+    --bg-1: #1c1c1c;
+    --bg-2: #434343;
+    --text: #fff;
+    --text-alt: #000;
+    --primary: rgb(0, 71, 143);
+}
+
+GtkWindow.background {
+    background-color: var(--bg-1);
+    color: var(--text);
+}
+
+GtkEntry, GtkButton {
+    background-color: var(--bg-2);
+    border-radius: 20px;
+}

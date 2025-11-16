@@ -4,8 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/gtk-4.0",
-                "/usr/include/glib-2.0"
+                "/usr/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/lib64/ccache/clang",
