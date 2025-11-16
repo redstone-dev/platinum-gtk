@@ -24,11 +24,16 @@ public class SettingsSidebar : Gtk.Box {
         }
     }
 
-    public void add_child (string key, string display_name, Gtk.Widget widget) {
-        var hbox = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4);
-        hbox.append (new Gtk.Label (display_name));
-        hbox.append (widget);
-        this.vbox.append (hbox);
+    public void add_child (string key, string display_name, Gtk.Widget widget, bool multiline = false) {
+        if (multiline) {
+            this.vbox.append (new Gtk.Label (display_name));
+            this.vbox.append (widget);
+        } else {
+            var hbox = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4);
+            hbox.append (new Gtk.Label (display_name));
+            hbox.append (widget);
+            this.vbox.append (hbox);
+        }
     }
 
     public void set_field (string key, Variant value) {

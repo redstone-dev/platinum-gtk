@@ -21,6 +21,9 @@ public class Platinum : Gtk.Application {
     private SettingsSidebar settings_sidebar;
 
     private string search_engine_uri_format = "https://google.com/search?q=%s";
+    private Gtk.Window window;
+
+    private Gtk.ShortcutController shortcut_controller = new Gtk.ShortcutController ();
 
     public Platinum () {
         Object (application_id: APP_ID);
@@ -35,17 +38,23 @@ public class Platinum : Gtk.Application {
 
     public override void activate () {
 
-        var window = new Gtk.ApplicationWindow (this) {
+        this.window = new Gtk.ApplicationWindow (this) {
             title = "Platinum"
         };
-        window.set_default_size (1000, 600);
+        this.window.set_default_size (1000, 600);
 
         this.settings_sidebar = new SettingsSidebar ();
 
         // Header bar. Contains the search bar and the navigation buttons
-        this.settings_button = new Gtk.Button.with_label ("Settings...");
+        this.settings_button = new IconButton.flat ("open-menu-symbolic");
+
         settings_button.clicked.connect (() => {
             this.settings_sidebar.toggle ();
+            if (this.settings_sidebar.is_open) {
+                this.settings_button.remove_css_class ("flat");
+            } else {
+                this.settings_button.add_css_class ("flat");
+            }
         });
         this.url_bar = new Gtk.Entry () {
             placeholder_text = "Search or enter URL",
@@ -63,19 +72,20 @@ public class Platinum : Gtk.Application {
         header.pack_start (this.url_bar);
         header.pack_start (this.go_button);
 
-        this.new_tab_button = new Gtk.Button.with_label ("New Tab");
+        this.new_tab_button = new IconButton.with_label ("tab-new-symbolic", "New Tab");
         this.new_tab_button.clicked.connect (() => {
             this.tabbed_web_view.add_new_tab ("https://google.com");
+            this.tabbed_web_view.notebook.set_current_page (this.tabbed_web_view.notebook.get_n_pages () - 1);
         });
-        this.back_button = new Gtk.Button.with_label ("<-");
+        this.back_button = new IconButton.flat ("go-previous-symbolic");
         this.back_button.add_css_class ("circular");
         this.back_button.clicked.connect (() =>
                                           this.tabbed_web_view.current_webview->go_back ());
-        this.forward_button = new Gtk.Button.with_label ("->");
+        this.forward_button = new IconButton.flat ("go-next-symbolic");
         this.forward_button.add_css_class ("circular");
         this.forward_button.clicked.connect (() =>
                                              this.tabbed_web_view.current_webview->go_forward ());
-        this.refresh_button = new Gtk.Button.with_label ("Refresh");
+        this.refresh_button = new IconButton.flat ("object-rotate-left-symbolic");
         this.refresh_button.clicked.connect (() =>
                                              this.tabbed_web_view.current_webview->reload ());
 
@@ -87,11 +97,10 @@ public class Platinum : Gtk.Application {
         header.pack_end (new_tab_button);
         // End of header bar
 
-        window.set_titlebar (header);
+        this.window.set_titlebar (header);
 
         this.tabbed_web_view = new TabbedWebView ();
         this.tabbed_web_view.add_new_tab ("file://" + Environment.get_current_dir () + "/../pages/quickstart.html");
-
 
         var vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 4);
         vbox.append (this.tabbed_web_view);
@@ -102,8 +111,10 @@ public class Platinum : Gtk.Application {
         hbox.append (settings_sidebar);
         hbox.append (vbox);
 
-        window.child = hbox;
-        window.present ();
+        //  set_keyboard_shortcuts ();
+
+        this.window.child = hbox;
+        this.window.present ();
     }
 
     public void populate_settings_sidebar () {
@@ -129,6 +140,17 @@ public class Platinum : Gtk.Application {
             }
         });
         this.settings_sidebar.add_child ("platinum.ui.tabBarEdge", "Tab Bar Edge", tab_bar_edge);
+
+        var search_engine = new Gtk.Entry () {
+            placeholder_text = "https://google.com/search?q=%s"
+        };
+        search_engine.activate.connect (() => {
+            if (search_engine.get_text ().contains ("%s"))
+                this.search_engine_uri_format = search_engine.get_text ();
+        });
+        this.settings_sidebar.add_child
+            ("platinum.searchEngineFormatString", "Search Engine Format String",
+            search_engine, true);
     }
 
     public void go_button_handler () {
@@ -143,6 +165,18 @@ public class Platinum : Gtk.Application {
         var fmt = this.search_engine_uri_format.printf (this.url_bar.text);
         this.tabbed_web_view.set_uri (fmt);
     }
+
+    // TODO: fix segfaulting
+    // private void set_keyboard_shortcuts () {
+    // var new_tab_shortcut = new Gtk.Shortcut (new Gtk.KeyvalTrigger (Gdk.Key.T, Gdk.ModifierType.NO_MODIFIER_MASK), new Gtk.CallbackAction (() => {
+    // print ("Hello world");
+
+    // return true;
+    // }));
+    // this.shortcut_controller.add_shortcut (new_tab_shortcut);
+
+    // this.window.add_controller (this.shortcut_controller);
+    // }
 
     public static int main (string[] args) {
         var app = new Platinum ();
