@@ -1,9 +1,0 @@
-window.background {
-    background-color: var(--bg-1);
-    color: var(--text);
-}
-
-entry, button {
-    background-color: var(--bg-2);
-    border-radius: 20px;
-}
