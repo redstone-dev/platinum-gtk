@@ -118,7 +118,7 @@ public class Platinum : Gtk.Application {
     }
 
     public void populate_settings_sidebar () {
-        var tab_bar_edge = new SegmentedButton ({ "Top", "Bottom", "Left", "Right" }, "Bottom");
+        var tab_bar_edge = new SegmentedButtonGroup ({ "Top", "Bottom", "Left", "Right" }, "Bottom");
         tab_bar_edge.item_changed.connect ((_, item) => {
             this.settings_sidebar.set_field ("platinum.ui.tabBarEdge", item);
             switch (item) {

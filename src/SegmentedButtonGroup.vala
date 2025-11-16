@@ -1,6 +1,6 @@
-class SegmentedButton : Gtk.Box {
+class SegmentedButtonGroup : Gtk.Box {
     public string selected_item = null;
-    public SegmentedButton (string[] items, string? default = null) {
+    public SegmentedButtonGroup (string[] items, string? default = null) {
         Object (orientation: Gtk.Orientation.HORIZONTAL, spacing: 0);
 
         if (default != null) {
