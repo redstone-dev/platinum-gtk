@@ -11,7 +11,9 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v6-beta
-
+            - name: Install dependencies
+              run: |
+                sudo apt install vala libgee-0.8 gtk4 webkit2gtk glib2.0
             - name: Meson build
               uses: BSFishy/meson-build@v1.0.3
               with:
