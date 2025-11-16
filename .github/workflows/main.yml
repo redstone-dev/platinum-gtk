@@ -1,0 +1,32 @@
+name: Build and upload artifact
+
+on:
+    release:
+        types: [created]
+
+jobs:
+    compile:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6-beta
+
+            - name: Meson build
+              run: |
+                meson setup build
+                meson compile -C build
+                mkdir -p bin
+                cp build/platinum-gtk bin/
+            - name: Create zip
+              run: zip -r ${{ vars.ARTIFACT_NAME }}.zip bin pages
+            - name: Attach to release
+              uses: actions/upload-release-asset@v1.0.2
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with: 
+                upload_url: ${{ github.event.release.upload_url }}
+                asset_path: ${{ vars.ARTIFACT_NAME }}
+                asset_name: ${{ vars.ARTIFACT_NAME }}
+                asset_content_type: application/zip
+
