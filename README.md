@@ -4,6 +4,9 @@
 
 A WebKitGTK-based browser written in Vala.
 
+## Resources
+
+Eventually you'll be able to create your own themes and plugins using CSS and Lua. Here you'll be able to find documentation for that.
 
 ## Compiling
 
@@ -21,3 +24,6 @@ meson compile
 1. **Accessibility** - Not only should everything work with a screen reader, it should be simple to use and understand for everyone.
 2. **Customizability** - Everyone has different preferences. A user should be able to apply that to their browser. 
 3. **Community** - Create a wide and open community to help maintain the project. An accepting and inclusive community is part of this--no fascism.
+
+
+
