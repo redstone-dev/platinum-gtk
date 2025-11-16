@@ -4,6 +4,8 @@
 
 A WebKitGTK-based browser written in Vala.
 
+[![Build and upload artifact](https://github.com/redstone-dev/platinum-gtk/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/redstone-dev/platinum-gtk/actions/workflows/main.yml)
+
 
 ## Compiling
 
