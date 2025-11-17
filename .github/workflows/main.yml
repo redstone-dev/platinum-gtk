@@ -23,7 +23,10 @@ jobs:
                 meson-version: 1.7.2
                 ninja-version: 1.12.1
             - name: Create zip
-              run: zip -r ${{ vars.ARTIFACT_NAME }}.zip bin pages
+              run: |
+                mkdir bin
+                mv build/platinum-gtk bin/platinum-gtk
+                zip -r ${{ vars.ARTIFACT_NAME }}.zip bin pages
             - name: Attach to release
               uses: actions/upload-release-asset@v1.0.2
               env:
