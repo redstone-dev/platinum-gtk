@@ -14,7 +14,7 @@ jobs:
             - name: Install dependencies
               run: |
                 sudo apt update
-                sudo apt install vala libgee-0.8 gtk4 webkit2gtk glib2.0
+                sudo apt install valac libgee-0.8-dev gtk4 libwebkitgtk-6.0-dev libgirepository-2.0-dev
             - name: Meson build
               uses: BSFishy/meson-build@v1.0.3
               with:
