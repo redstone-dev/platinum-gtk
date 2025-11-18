@@ -9,7 +9,7 @@ A WebKitGTK-based browser written in Vala.
 
 ## Compiling
 
-Requires `gtk4`, `valac`, `libgee`, `glib-networking`, `json-glib`, and `meson`.
+Requires `gtk4`, `valac`, `libgee`, `glib-networking`, `json-glib`, and `meson`. For Ubuntu, run `sudo apt install libgee-0.8-2 libgee-0.8-dev cmake libwebkitgtk-6.0-dev libgtk-4-dev valac libgee-0.8-2 glib-networking json-glib-tools meson` to obtain the required dependencies.
 
 ```
 meson build
