@@ -17,8 +17,6 @@ sources = files(
   'src/main.vala',
 ) + files(
   'src/Plugin.vala',
-) + files(
-  'plugins/example.plugin/ExamplePlugin.vala'
 )
 
 executable('platinum-gtk', sources, dependencies: dependencies)
