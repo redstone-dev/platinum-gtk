@@ -6,6 +6,7 @@ dependencies = [
   dependency('gtk4'),
   dependency('webkitgtk-6.0'),
   dependency('gee-0.8'),
+  dependency('libpeas-1.0')
 ]
 
 sources = files(
@@ -14,6 +15,10 @@ sources = files(
   'src/SettingsSidebar.vala',
   'src/TabbedWebView.vala',
   'src/main.vala',
+) + files(
+  'src/Plugin.vala',
+) + files(
+  'plugins/example.plugin/ExamplePlugin.vala'
 )
 
 executable('platinum-gtk', sources, dependencies: dependencies)

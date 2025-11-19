@@ -1,7 +1,7 @@
 public class Platinum : Gtk.Application {
     private const string APP_ID = "io.github.redstone-dev.Platinum";
 
-    private TabbedWebView tabbed_web_view;
+    public TabbedWebView tabbed_web_view;
 
     // HeaderBar contents
     private Gtk.Button settings_button;
@@ -18,12 +18,13 @@ public class Platinum : Gtk.Application {
     private Regex protocol_regex;
     private Regex domain_regex;
 
-    private SettingsSidebar settings_sidebar;
+    public SettingsSidebar settings_sidebar;
 
     private string search_engine_uri_format = "https://google.com/search?q=%s";
-    private Gtk.Window window;
+    public Gtk.Window window;
 
-    private Gtk.ShortcutController shortcut_controller = new Gtk.ShortcutController ();
+    //  private Gtk.ShortcutController shortcut_controller = new Gtk.ShortcutController ();
+    private Peas.ExtensionSet plugins;
 
     public Platinum () {
         Object (application_id: APP_ID);
@@ -68,15 +69,18 @@ public class Platinum : Gtk.Application {
 
         var header = new Gtk.HeaderBar ();
         header.pack_start (this.settings_button);
-        header.pack_start (this.new_tab_button);
         header.pack_start (this.url_bar);
         header.pack_start (this.go_button);
 
-        this.new_tab_button = new IconButton.with_label ("tab-new-symbolic", "New Tab");
+        this.tabbed_web_view = new TabbedWebView ();
+        this.tabbed_web_view.add_new_tab ("file://" + Environment.get_current_dir () + "/../pages/quickstart.html");
+
+        this.new_tab_button = new IconButton.flat ("tab-new-symbolic");
         this.new_tab_button.clicked.connect (() => {
             this.tabbed_web_view.add_new_tab ("https://google.com");
             this.tabbed_web_view.notebook.set_current_page (this.tabbed_web_view.notebook.get_n_pages () - 1);
         });
+        this.tabbed_web_view.notebook.set_action_widget (this.new_tab_button, Gtk.PackType.START);
         this.back_button = new IconButton.flat ("go-previous-symbolic");
         this.back_button.add_css_class ("circular");
         this.back_button.clicked.connect (() =>
@@ -94,13 +98,12 @@ public class Platinum : Gtk.Application {
         header.pack_end (forward_button);
         header.pack_end (back_button);
         header.pack_end (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
-        header.pack_end (new_tab_button);
+        
         // End of header bar
 
         this.window.set_titlebar (header);
 
-        this.tabbed_web_view = new TabbedWebView ();
-        this.tabbed_web_view.add_new_tab ("file://" + Environment.get_current_dir () + "/../pages/quickstart.html");
+        
 
         var vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 4);
         vbox.append (this.tabbed_web_view);
@@ -177,6 +180,23 @@ public class Platinum : Gtk.Application {
 
     // this.window.add_controller (this.shortcut_controller);
     // }
+
+    public void load_plugins () {
+        var engine = Peas.Engine.get_default ();
+        engine.enable_loader ("lua");
+        engine.add_search_path ("../plugins", "../plugins");
+
+        this.plugins = new Peas.ExtensionSet (engine, typeof(Plugins.Plugin), "platinum", this);
+        this.plugins.extension_added.connect ((info, plugin) => {
+            if (plugin != null) (plugin as Plugins.Plugin).activate ();
+        });
+        this.plugins.extension_removed.connect ((info, plugin) => {
+            if (plugin != null) (plugin as Plugins.Plugin).deactivate ();
+        });
+        foreach (var plugin in engine.get_plugin_list ()) {
+            engine.try_load_plugin (plugin);
+        }
+    }
 
     public static int main (string[] args) {
         var app = new Platinum ();

@@ -5,7 +5,7 @@ on:
     types: [created]
 
 jobs:
-    compile:
+    build:
       runs-on: ubuntu-latest
 
       steps:
@@ -25,16 +25,17 @@ jobs:
         - name: Create zip
           run: |
             mkdir bin
+            mkdir plugins
             mv build/platinum-gtk bin/platinum-gtk
-            zip -r ${{ vars.ARTIFACT_NAME }}.zip bin pages
+            zip -r ${{ vars.ARTIFACT_NAME }}.zip bin pages plugins
         - name: Attach to release
           uses: actions/upload-release-asset@v1.0.2
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with: 
             upload_url: ${{ github.event.release.upload_url }}
-            asset_path: ${{ vars.ARTIFACT_NAME }}.zip
-            asset_name: ${{ vars.ARTIFACT_NAME }}.zip
+            asset_path: ${{ vars.ARTIFACT_NAME }}@${{ github.event.release.tag_name }}.zip
+            asset_name: ${{ vars.ARTIFACT_NAME }}@${{ github.event.release.tag_name }}.zip
             asset_content_type: application/zip
-    
+
 
